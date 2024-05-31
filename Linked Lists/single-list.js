@@ -39,6 +39,8 @@ class MySinglyLinkedList {
 
         this.tail = node;
         this.length++;
+
+        return this;
     }
     prepend(value){
         const node = new Node(value);
@@ -46,6 +48,33 @@ class MySinglyLinkedList {
         node.next = this.head 
         this.head = node 
         this.length++;
+
+        return this;
+    }
+    insert(index, value){
+        if (index >= this.length) { //Si el indice todavía nha sido alcanzado
+            this.length++;
+            return this.append(value);
+        }
+
+        let currentNode = this.head;
+        for(let i = 0; i < this.length; i++){
+            if(i == index - 1){
+                const newNode = new Node(value);
+                
+                const furterNode = currentNode.next; 
+                currentNode.next = newNode
+                newNode.next = furterNode
+
+                this.length++;
+
+                return this;
+            }
+
+            currentNode = currentNode.next;
+        }
+
+        return this;
     }
     getAllNodesValues(){
         const nodesValuesList = [];
@@ -88,3 +117,6 @@ myLinkedList.prepend(150);
 console.log(myLinkedList);
 console.log(myLinkedList.getAllNodesValues());
 console.log(myLinkedList.lookup(2));
+
+myLinkedList.insert(2, 45);
+console.log(myLinkedList.getAllNodesValues());
