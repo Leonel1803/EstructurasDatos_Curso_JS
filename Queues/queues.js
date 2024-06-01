@@ -2,6 +2,7 @@ class Node {
     constructor(value){
         this.value = value;
         this.next = null;
+        this.prev = null;
     }
 }
 
@@ -9,7 +10,8 @@ class MyQueue {
     constructor(value){
         this.head = {
             value: value,
-            next: null
+            next: null,
+            prev: null
         }
 
         this.tail = this.head;
@@ -18,15 +20,16 @@ class MyQueue {
     enqueue(value){
         const newNode = new Node(value);
 
-        const forwardHead = this.tail;
-        newNode.prev = previousHead;
-        this.head = newNode
+        const lastNode = this.tail;
+        lastNode.prev = newNode;
+        newNode.next = lastNode
+        this.tail = newNode;
 
         this.length++;
 
         return this;
     }
-    pop(){
+    dequeue(){
         const previousNode = this.head.prev;
         const deleteValue = this.head.value;
         delete this.head;
@@ -51,3 +54,16 @@ class MyQueue {
         return nodesValuesList;
     }
 }
+
+const myQueue = new MyQueue(35);
+
+myQueue.enqueue(56);
+myQueue.enqueue(23);
+
+console.log(myQueue.getAllNodesValues());
+
+myQueue.dequeue();
+
+console.log(myQueue.getAllNodesValues());
+
+console.log(myQueue.peek());
