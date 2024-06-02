@@ -26,35 +26,50 @@ class MyTree {
             }
         }
     }
-    delete(value){
-        const nodeDelete = this.searchNode(value, this.head);
-
-        const lastNode = this.moveNodes(nodeDelete.right.value, nodeDelete);
-
-        lastNode = null;
+    delete(value) {
+        const deleteNode = this.deleteRec(this.head, value);
     }
-    moveNodes(value, currentNode){
-        if (currentNode.value > value) {
-            if (currentNode.left != null) {
-                currentNode.value = currentNode.left.value;
-                return this.moveNodes(value, currentNode.left);
-            } 
-            else {
-                return currentNode;
-            }
+    deleteRec(root, value) {
+        if (root == null) {
+            return root;
+        }
+        if (value < root.value) {
+            root.left = this.deleteRec(root.left, value);
         } 
-        else if (currentNode.value < value) {
-            if (currentNode.right != null) {
-                currentNode.value = currentNode.right.value;
-                return this.moveNodes(value, currentNode.left);
-            } 
-            else {
-                return currentNode = null;
-            }
+        else if (value > root.value) {
+            root.right = this.deleteRec(root.right, value);
         } 
         else {
-            return currentNode; // El valor ya existe en el árbol
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            }
+    
+            root.value = this.minValue(root.right);
+    
+            root.right = this.deleteRec(root.right, root.value);
         }
+    
+        return root;
+    }
+    minValue(node) {
+        let current = node;
+
+        while (current.left != null) {
+            current = current.left;
+        }
+    
+        return current.value;
+    }
+    search(value){
+        const findedNode = this.searchNode(value, this.head);
+
+        if(findedNode.value == value){
+            return true;
+        }
+
+        return false;
     }
     searchNode(value, currentNode) {
         if (currentNode.value > value) {
@@ -116,3 +131,9 @@ tree.printTree();
 tree.delete(5);
 
 tree.printTree();
+
+tree.insert(9);
+
+tree.printTree();
+
+console.log(tree.search(10));
